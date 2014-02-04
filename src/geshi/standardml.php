@@ -16,6 +16,9 @@
  *
  * TODO (updated 2014/02/04)
  * -------------------------
+ * - character literal
+ * - word literal (hex | dec)
+ * - integer literal (hex | dec)
  *
  *************************************************************************************
  *
@@ -38,94 +41,85 @@
  ************************************************************************************/
 
 $language_data = array (
-    'LANG_NAME' => 'OCaml',
+    'LANG_NAME' => 'StandardML',
     'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array('(*' => '*)'),
     'COMMENT_REGEXP' => array(1 => '/\(\*(?:(?R)|.)+?\*\)/s'),
-    'CASE_KEYWORDS' => 0,
+    'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array('"'),
-    'ESCAPE_CHAR' => "",
+    'ESCAPE_CHAR' => '\\',
+    'NUMBERS' =>
+        GESHI_NUMBER_INT_BASIC | GESHI_NUMBER_INT_CSTYLE | GESHI_NUMBER_BIN_PREFIX_0B |
+        GESHI_NUMBER_HEX_PREFIX | GESHI_NUMBER_FLT_NONSCI,
     'KEYWORDS' => array(
-        /* main OCaml keywords */
+        /* main SML keywords */
         1 => array(
-            'and', 'as', 'asr', 'begin', 'class', 'closed', 'constraint', 'do', 'done', 'downto', 'else',
-            'end', 'exception', 'external', 'failwith', 'false', 'for', 'fun', 'function', 'functor',
-            'if', 'in', 'include', 'inherit',  'incr', 'land', 'let', 'load', 'los', 'lsl', 'lsr', 'lxor',
-            'match', 'method', 'mod', 'module', 'mutable', 'new', 'not', 'of', 'open', 'option', 'or', 'parser',
-            'private', 'ref', 'rec', 'raise', 'regexp', 'sig', 'struct', 'stdout', 'stdin', 'stderr', 'then',
-            'to', 'true', 'try', 'type', 'val', 'virtual', 'when', 'while', 'with'
+            'and', 'andalso', 'as', 'begin', 'case', 'datatype', 'else',
+            'end', 'exception', 'fn', 'fun', 'functor',
+            'if', 'in', 'infix', 'infixr', 'include', 'let', 'local', 'nonfix',
+            'of', 'op', 'open', 'orelse',
+            'rec', 'raise', 'sharing', 'sig', 'signature', 'struct', 'structure', 'then',
+            'type', 'val', 'while', 'where', 'with', 'withtype'
             ),
-        /* define names of main librarys, so we can link to it */
+        /* Top-level type and value identifiers */
         2 => array(
-            'Arg', 'Arith_status', 'Array', //'Array1', 'Array2', 'Array3',
-            'ArrayLabels', 'Big_int', 'Bigarray', 'Buffer', 'Callback',
-            'CamlinternalLazy', 'CamlinternalMod', 'CamlinternalOO', 'Char',
-            'Complex', 'Condition', 'Dbm', 'Digest', 'Dynlink', 'Event',
-            'Filename', 'Format', 'Gc', 'Genlex', 'Graphics', 'GraphicsX11',
-            'Hashtbl', 'Int32', 'Int64', 'Lazy', 'Lexing', 'List', 'ListLabels',
-            'Map', 'Marshal', 'MoreLabels', 'Mutex', 'Nativeint', 'Num', 'Obj',
-            'Oo', 'Parsing', 'Pervasives', 'Printexc', 'Printf', 'Queue',
-            'Random', 'Scanf', 'Set', 'Sort', 'Stack', 'StdLabels', 'Str',
-            'Stream', 'String', 'StringLabels', 'Sys', 'Thread', 'ThreadUnix',
-            'Tk', 'Unix', 'UnixLabels', 'Weak'
+            /* types */
+            'unit', 'int', 'word', 'real', 'char', 'string', 'substring', 'exn',
+            'array', 'vector', 'ref', 'bool', 'true', 'false', 'option', 'NONE', 'SOME', 'LESS', 'EQUAL', 'GREATER',
+            'list', 'nil',
+            'General', 'Int', 'Word', 'Real', 'Char', 'String', 'Substring', 'Array', 'Vector', 'Option'
             ),
-        /* just link to the Pervasives functions library, cause it's the default opened library when starting OCaml */
+        /* standard structures/signatures/functors provided by Basis library */
         3 => array(
-            'abs', 'abs_float', 'acos', 'asin', 'at_exit', 'atan', 'atan2',
-            'bool_of_string', 'ceil', 'char_of_int', 'classify_float',
-            'close_in', 'close_in_noerr', 'close_out', 'close_out_noerr',
-            'compare', 'cos', 'cosh', 'decr', 'epsilon_float', 'exit', 'exp',
-            'float', 'float_of_int', 'float_of_string', 'floor', 'flush',
-            'flush_all', 'format_of_string', 'frexp', 'fst', 'ignore',
-            'in_channel_length', 'infinity', 'input', 'input_binary_int',
-            'input_byte', 'input_char', 'input_line', 'input_value',
-            'int_of_char', 'int_of_float', 'int_of_string', 'invalid_arg',
-            'ldexp', 'log', 'log10', 'max', 'max_float', 'max_int', 'min',
-            'min_float', 'min_int', 'mod_float', 'modf', 'nan', 'open_in',
-            'open_in_bin', 'open_in_gen', 'open_out', 'open_out_bin',
-            'open_out_gen', 'out_channel_length', 'output', 'output_binary_int',
-            'output_byte', 'output_char', 'output_string', 'output_value',
-            'pos_in', 'pos_out',  'pred', 'prerr_char', 'prerr_endline',
-            'prerr_float', 'prerr_int', 'prerr_newline', 'prerr_string',
-            'print_char', 'print_endline', 'print_float', 'print_int',
-            'print_newline', 'print_string', 'read_float', 'read_int',
-            'read_line', 'really_input', 'seek_in', 'seek_out',
-            'set_binary_mode_in', 'set_binary_mode_out', 'sin', 'sinh', 'snd',
-            'sqrt', 'string_of_bool', 'string_of_float', 'string_of_format',
-            'string_of_int', 'succ', 'tan', 'tanh', 'truncate'
+            'ARRAY', 'Array2', 'ARRAY2', 'ArraySlice', 'ARRAY_SLICE', 'BinIO', 'BIT_FLAGS', 'Bool', 'BOOL', 'Byte', 'CHAR',
+            'CommandLine', 'Date', 'GenericSock', 'IEEEReal', 'IMPERATIVE_IO',
+            'ImperativeIO', 'INetSock', 'INTEGER', 'IntInf', 'IO', 'List', 'ListPair',
+            'MATH', 'MONO_ARRAY', 'MONO_ARRAY2', 'MONO_ARRAY_SLICE', 'MONO_VECTOR',
+            'MONO_VECTOR_SLICE', 'NetHostDB', 'NetProtDB', 'NetServDB',
+            'OS', 'OS.FileSys', 'OS.IO', 'OS.Path', 'OS.Process', 'PACK_REAL', 'PACK_WORD',
+            'Posix', 'Posix.Error', 'Posix.FileSys', 'Posix.IO', 'Posix.ProcEnv', 'Posix.Process',
+            'Posix.Signal', 'Posix.SysDB', 'Posix.TTY', 'PRIM_IO', 'PrimIO', 'REAL', 'Socket',
+            'STREAM_IO', 'StreamIO', 'STRING', 'StringCvt', 'SUBSTRING', 'TEXT', 'TEXT_IO',
+            'TEXT_STREAM_IO', 'Time', 'Timer', 'Unix', 'UnixSock', 'VECTOR', 'VECTOR_SLICE',
+            'Windows', 'WORD'
             ),
-        /* here Pervasives Types */
-        4 => array (
-            'array','bool','char','exn','file_descr','format','fpclass',
-            'in_channel','int','int32','int64','list','nativeint','open_flag',
-            'out_channel','string','Sys_error','unit'
+        /* Top-level value identifiers */
+        4 => array(
+            'app', 'before', 'ceil', 'chr', 'concat', 'exnMessage', 'exnName', 'explode',
+            'floor', 'foldl', 'foldr', 'getOpt', 'hd', 'ignore', 'implode', 'isSome', 'length', 'map', 'not',
+            'null', 'o', 'ord', 'print', 'rev', 'round', 'size', 'str', 'tl', 'trunc',
+            'use', 'valOf',
+            /* overloaded identifiers */
+            'div', 'mod', 'abs'
             ),
-        /* finally Pervasives Exceptions */
+        /* standard exceptions */
         5 => array (
-            'Exit', 'Invalid_Argument', 'Failure', 'Division_by_zero'
+            'Bind', 'Chr', 'Div', 'Domain', 'Empty', 'Fail', 'Match', 'Overflow', 'Size', 'Span', 'Subscript'
             )
         ),
     /* highlighting symbols is really important in OCaml */
     'SYMBOLS' => array(
-        '+.', '-.', '*.', '/.', '[<', '>]',
-        ';', '!', ':', '.', '=', '%', '^', '*', '-', '/', '+',
-        '>', '<', '(', ')', '[', ']', '&', '|', '#', "'",
+        0 => array('=', ':', ':>', '=>', '(', ')', '|', '_', '==', '#', ';', '.'),
+        1 => array('!', ':=', '@', '^'),
+        2 => array('[', ']', '::', '{', '}'),
+        /* overloaded identifiers */
+        3 => array('+', '-', '*', '/', '~', '<', '>', '<=', '>=')
         ),
     'CASE_SENSITIVE' => array(
         GESHI_COMMENTS => false,
-        1 => false,
-        2 => true, /* functions name are case sensitive */
-        3 => true, /* types name too */
-        4 => true, /* pervasives types */
-        5 => true  /* pervasives exceptions */
+        1 => true, /* keywords */
+        2 => true, /* top level types */
+        3 => true, /* structures */
+        4 => true, /* top level identifiers */
+        5 => true  /* top level exceptions */
         ),
     'STYLES' => array(
         'KEYWORDS' => array(
-            1 => 'color: #06c; font-weight: bold;', /* nice blue */
-            2 => 'color: #06c; font-weight: bold;', /* nice blue */
-            3 => 'color: #06c; font-weight: bold;', /* nice blue */
-            4 => 'color: #06c; font-weight: bold;', /* nice blue */
-            5 => 'color: #06c; font-weight: bold;' /* nice blue */
+            1 => 'color: #06c; font-weight: bold;',
+            2 => 'color: #06c; font-weight: bold;',
+            3 => 'color: #06c; font-weight: bold;',
+            4 => 'color: #06c; font-weight: bold;',
+            5 => 'color: #06c; font-weight: bold;'
             ),
         'COMMENTS' => array(
             'MULTI' => 'color: #5d478b; font-style: italic;', /* light purple */
@@ -156,18 +150,13 @@ $language_data = array (
             )
         ),
     'URLS' => array(
-        /* some of keywords are Pervasives functions (land, lxor, asr, ...) */
         1 => '',
-        /* link to the wanted library */
-        2 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/{FNAME}.html',
-        /* link to Pervasives functions */
-        3 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#VAL{FNAME}',
-        /* link to Pervasives type */
-        4 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#TYPE{FNAME}',
-        /* link to Pervasives exceptions */
-        5 => 'http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html#EXCEPTION{FNAME}'
+        2 => 'http://www.standardml.org/Basis/top-level-chapter.html',
+        3 => 'http://www.standardml.org/Basis/{FNAME}.html',
+        4 => 'http://www.standardml.org/Basis/{FNAME}.html',
+        5 => 'http://www.standardml.org/Basis/top-level-chapter.html#section:2'
         ),
-    'OOLANG' => false,
+    'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(
         1 => '.'
         ),
