@@ -152,8 +152,8 @@ $language_data = array (
     'URLS' => array(
         1 => '',
         2 => 'http://www.standardml.org/Basis/top-level-chapter.html',
-        3 => 'http://www.standardml.org/Basis/{FNAME}.html',
-        4 => 'http://www.standardml.org/Basis/{FNAME}.html',
+        3 => '',
+        4 => '',
         5 => 'http://www.standardml.org/Basis/top-level-chapter.html#section:2'
         ),
     'OOLANG' => true,
